@@ -13,6 +13,9 @@ export abstract class BattleTypesEntity extends BaseCustomEntity {
 
     @Column('boolean', { name: 'active', nullable: false })
     active: boolean;
+
+    @Column('text', { name: 'type', nullable: true })
+    type: string;
     
     @OneToMany(
         () => BattlesEntity,

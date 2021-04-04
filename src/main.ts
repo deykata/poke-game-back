@@ -11,6 +11,7 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter()
   );
+
   app.setGlobalPrefix('wrapper-poke');
 
   let options: CorsOptions = {

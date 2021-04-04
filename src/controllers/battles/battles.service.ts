@@ -22,7 +22,7 @@ export class BattlesService {
             response.types = [];
             const foundTypes = await this.battleTypeRepo.find();
             foundTypes.forEach(type => {
-                const item = new singleResponseType(type.id, type.name, type.active, type.ptsXBattle);
+                const item = new singleResponseType(type.id, type.name, type.active, type.ptsXBattle, type.type);
                 response.types.push(item);
             })
             return response;
