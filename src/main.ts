@@ -2,17 +2,12 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
-// import { SocketIoAdapter } from './socket-io.adapter';
-
-const port = process.env.PORT ? Number(process.env.port) : 8080;
-const host = process.env.HOST || '0.0.0.0';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter()
   );
-  // app.useWebSocketAdapter(new SocketIoAdapter(app, true));
   app.setGlobalPrefix('wrapper-poke');
 
   let options: CorsOptions = {
@@ -22,7 +17,7 @@ async function bootstrap() {
 
   app.enableCors(options);
 
-  await app.listen(port, host, (err, address) => {
+  await app.listen(process.env.PORT || 8080, '0.0.0.0', (err, address) => {
     if (err) {
       console.error(err);
       process.exit(1);
