@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BattlesEntity } from 'src/shared/models/battles.entity';
 import { UsersEntity } from 'src/shared/models/users.entity';
@@ -7,6 +7,7 @@ import { ResponseRankingItem, ResponseRankingDto} from './rankings.dto';
 
 @Injectable()
 export class RankingsService {
+    private logger: Logger = new Logger(RankingsService.name, true);
     
     constructor(
         @InjectRepository(BattlesEntity) private readonly battlesRepo: Repository<BattlesEntity>,
@@ -14,7 +15,9 @@ export class RankingsService {
     ) {}
 
     async getRanking(type: string, limit: any, userId: string) {
+        this.logger.log(`Fetching rankings`);
         try {
+            this.logger.log(`Ranking type: ${type}; Ranking limit: ${limit}`);
             let ranking;
             const limitParam = Number.isInteger(parseInt(limit)) ? limit : null;
             if (type == 'combined') {
@@ -30,6 +33,7 @@ export class RankingsService {
                     relations: ["userId"]
                 })
             }
+            this.logger.log(`Fetched rankings succesfully`);
             return this.mapRankingResult(type, ranking);;
         } catch (error) {
             return new HttpException('Error on getting player rankings', HttpStatus.INTERNAL_SERVER_ERROR);

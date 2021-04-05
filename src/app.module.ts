@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
+import { AppGateway } from './app.gateway';
 import { AppService } from './app.service';
 import { BattlesModule } from './controllers/battles/battles.module';
 import { RankingsModule } from './controllers/rankings/rankings.module';
 import { UsersModule } from './controllers/users/users.module';
-import { WebsocketModule } from './websocket/websocket.module';
 
 @Module({
   imports: [
@@ -14,10 +14,9 @@ import { WebsocketModule } from './websocket/websocket.module';
     }),
     BattlesModule,
     RankingsModule,
-    UsersModule,
-    WebsocketModule
+    UsersModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppGateway],
 })
 export class AppModule {}

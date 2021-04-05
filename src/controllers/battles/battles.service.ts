@@ -17,6 +17,7 @@ export class BattlesService {
     ) {}
 
     async getBattleTypes() {
+        this.logger.log(`Fetching battle types`);
         try {
             const response = {} as ResponseTypesDto;
             response.types = [];
@@ -25,6 +26,7 @@ export class BattlesService {
                 const item = new singleResponseType(type.id, type.name, type.active, type.ptsXBattle, type.type);
                 response.types.push(item);
             })
+            this.logger.log(`Fetched battle types successfully`);
             return response;
         } catch (error) {
             return new HttpException('Error on getting battle types', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -32,6 +34,7 @@ export class BattlesService {
     }
 
     async saveNewBattle(body: BattleDataDto) {
+        this.logger.log(`Save new battle: start`);
         try {
             
             let battleUser = await this.userRepo.findOne({
@@ -46,6 +49,7 @@ export class BattlesService {
             if (!battleType) {
                 return new HttpException('Incorrect battle type', HttpStatus.NOT_ACCEPTABLE);    
             }
+            this.logger.log(`Save new battle: end successfully for user ${battleUser.id}`);
             const response = await this.saveBattle(body, battleUser, battleType);
             return response;
         } catch (err) {
