@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BattlesEntity } from 'src/shared/models/battles.entity';
 import { UsersEntity } from 'src/shared/models/users.entity';
-import { Repository } from 'typeorm';
+import { MoreThanOrEqual, Repository } from 'typeorm';
 import { ResponseRankingItem, ResponseRankingDto} from './rankings.dto';
 
 @Injectable()
@@ -22,6 +22,7 @@ export class RankingsService {
             const limitParam = Number.isInteger(parseInt(limit)) ? limit : null;
             if (type == 'combined') {
                 ranking = await this.userRepo.find({
+                    where: { allPoints: MoreThanOrEqual(0) },
                     order: { allPoints: "DESC" },
                     take: limitParam
                 });
