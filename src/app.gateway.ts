@@ -2,8 +2,7 @@ import { Logger } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-const port = process.env.PORT ? Number(process.env.PORT) : 4444;
-@WebSocketGateway(port)
+@WebSocketGateway(+process.env.PORT || 4444)
 export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   rooms = [];
 
